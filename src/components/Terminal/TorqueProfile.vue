@@ -18,35 +18,24 @@ export default {
   methods: {
     generateChartData(){
 
-      // this whole function needs to be delegated elsewhere..
-      
-      let open_data = [],
-          close_data = [];
-
-      torque_data.forEach(function(d){
-        if (d.Direction == "Open") {
-          if (d.AssetId == "577240d54d4d58401d060a5e") {
-            open_data.push(d)
-          }
-        } else if (d.Direction == "Close") {
-          if (d.AssetId == "577240d54d4d58401d060a5e") {
-            close_data.push(d);
-          }
-        }
-      })
-
+      // this whole thing is kind of a mess :)
       var open_average = [],
           open_last = [],
           close_average = [],
           close_last = [];
 
-      open_data.forEach(function(x) {
-        open_average[x.Position] = x.AverageTorque;
-        open_last[x.Position] = x.LastTorque;
-      })
-      close_data.forEach(function(x) {
-        close_average[x.Position] = x.AverageTorque;
-        close_last[x.Position] = x.LastTorque;
+      torque_data.forEach(function(d){
+        // hard coded an asset ID and made some VERY broad generalized
+        // guesses about the data...
+        if (d.AssetId == "577240d54d4d58401d060a5e") {
+          if (d.Direction == "Open") {
+            open_average[d.Position] = d.AverageTorque;
+            open_last[d.Position] = d.LastTorque;
+          } else if (d.Direction == "Close") {
+            close_average[d.Position] = d.AverageTorque;
+            close_last[d.Position] = d.LastTorque;
+          }
+        }
       })
 
       this.close.datasets = [{
